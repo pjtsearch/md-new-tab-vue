@@ -1,0 +1,51 @@
+{
+  "name": "md-new-tab-vue-2",
+  "version": "1.0.0",
+  "description": "A Vue.js web extension",
+  "author": "pjtsearch <pjtsignups@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "precommit": "pretty-quick --staged",
+    "prettier": "prettier \"src/**/*.{js,vue}\"",
+    "prettier:write": "npm run prettier -- --write",
+    "build": "cross-env NODE_ENV=production webpack --hide-modules",
+    "build:dev": "cross-env NODE_ENV=development webpack --hide-modules",
+    "build-zip": "node scripts/build-zip.js",
+    "watch": "npm run build -- --watch",
+    "watch:dev": "cross-env HMR=true npm run build:dev -- --watch"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "global": "^4.3.2",
+    "muse-ui": "^3.0.1",
+    "serve": "^10.1.1",
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@types/chrome": "^0.0.74",
+    "archiver": "^3.0.0",
+    "babel-loader": "^8.0.2",
+    "copy-webpack-plugin": "^4.5.3",
+    "cross-env": "^5.2.0",
+    "css-loader": "^0.28.11",
+    "ejs": "^2.6.1",
+    "file-loader": "^1.1.11",
+    "husky": "^0.14.3",
+    "mini-css-extract-plugin": "^0.4.4",
+    "node-sass": "^4.9.3",
+    "prettier": "^1.14.3",
+    "pretty-quick": "^1.8.0",
+    "sass-loader": "^7.1.0",
+    "vue-loader": "^15.4.2",
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.20.2",
+    "webpack-chrome-extension-reloader": "^0.8.3",
+    "webpack-cli": "^3.1.2",
+    "webpack-shell-plugin": "^0.5.0"
+  }
+}
