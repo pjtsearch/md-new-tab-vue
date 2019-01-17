@@ -4,30 +4,30 @@
       <mu-button icon slot="left" @click="drawerOpen = !drawerOpen">
         <mu-icon value="menu"></mu-icon>
       </mu-button>
+      <mu-button icon slot="right" @click="editMode = !editMode">
+        <mu-icon value="edit" v-if="!editMode"></mu-icon>
+        <mu-icon value="close" v-if="editMode"></mu-icon>
+      </mu-button>
       <mu-button icon slot="right" to="/settings">
         <mu-icon value="settings"></mu-icon>
       </mu-button>
     </mu-appbar>
-    <mu-drawer :open.sync="drawerOpen" :docked="false">
-      <mu-list>
-        <mu-list-item button>
-          <mu-list-item-title>Menu Item 1</mu-list-item-title>
-        </mu-list-item>
-        <mu-list-item button>
-          <mu-list-item-title>Menu Item 2</mu-list-item-title>
-        </mu-list-item>
-      </mu-list>
+    <mu-drawer :open.sync="drawerOpen" :docked="false" :width="370" :z-depth="settings.shadows ? 10 : 0">
+      <apps></apps>
     </mu-drawer>
     <div id="search-section">
       <img id="search-logo" :src="settings.searchEngine.img">
-      <mu-auto-complete autocomplete="off" ref="searchbar" :data="suggestions" id="searchbar" v-model="searchText" placeholder="Search..." @select="search"></mu-auto-complete>
+      <mu-auto-complete autocomplete="off" ref="searchbar" :data="suggestions" id="searchbar" v-model="searchText" placeholder="Search..." @keyup.enter.native="search" @select="search" :max-height="190"></mu-auto-complete>
     </div>
+    <shortcuts v-model="settings.shortcuts" :editMode="editMode"></shortcuts>
   </div>
 </template>
 
 <script>
 import theme from 'muse-ui/lib/theme';
 import settings from '../../settings.js';
+import Shortcuts from '../../components/Shortcuts.vue';
+import Apps from '../../components/Apps.vue';
 
 export default {
   data() {
@@ -35,8 +35,13 @@ export default {
       drawerOpen:false,
       searchText:null,
       suggestions:[],
+      editMode:false,
       settings
     };
+  },
+  components:{
+    Shortcuts,
+    Apps
   },
   computed:{
     savedSettings(){
@@ -51,6 +56,9 @@ export default {
       return json[1];
     },
     search(query){
+      if (query.ctrlKey === false){
+        query = query.target.value;
+      }
       location.href = this.settings.searchEngine.url.replace("%s",query);
     }
   },
@@ -67,6 +75,13 @@ export default {
         document.querySelector(".mu-popover.transition-bottom").style.display = "block";
       }
     },
+    'settings':{
+        handler: function (after, before) {
+          console.log(after);
+          localStorage.settings = JSON.stringify(after);
+        },
+        deep:true
+      },
     'settings.dark'(val){
       if (val === true){
         theme.use(this.settings.theme.dark);
@@ -89,6 +104,12 @@ export default {
 }
 *{
   transition: background 0.2s;
+}
+body{
+  background-position: center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    min-height: 100vh;
 }
 #search-section{
   margin-top:calc(50vh - 19px - 64px - 140px);
@@ -123,7 +144,7 @@ export default {
   }
 
   #search-logo{
-    max-height:200px;
+    max-height:140px;
     max-width:800px;
     display:block;
     margin: auto;

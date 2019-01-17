@@ -1,10 +1,13 @@
 <template>
   <div :class="`dark-${settings.dark}`">
-    <mu-appbar style="width: 100%;" color="primary" :textColor="settings.dark ? '#fff' : '#fff'" :z-depth="4">
+    <mu-appbar style="width: 100%;" color="primary" :textColor="settings.dark ? '#fff' : '#fff'" :z-depth="settings.shadows ? 4 : 0">
       <mu-button icon slot="left" to="/">
         <mu-icon value="arrow_back"></mu-icon>
       </mu-button>
       Settings
+      <mu-button icon slot="right" @click="reset()">
+        <mu-icon value="refresh"></mu-icon>
+      </mu-button>
     </mu-appbar>
 
     <mu-list id="settings-list">
@@ -18,6 +21,16 @@
         <mu-list-item-title>Dark Mode</mu-list-item-title>
         <mu-list-item-action class="switch-wrapper-item-action">
           <mu-switch v-model="settings.dark"></mu-switch>
+        </mu-list-item-action>
+      </mu-list-item>
+
+      <mu-list-item button :ripple="true" @click="settings.shadows = !settings.shadows">
+        <mu-list-item-action>
+          <mu-icon value="overlay"></mu-icon>
+        </mu-list-item-action>
+        <mu-list-item-title>Shadows</mu-list-item-title>
+        <mu-list-item-action class="switch-wrapper-item-action">
+          <mu-switch v-model="settings.shadows"></mu-switch>
         </mu-list-item-action>
       </mu-list-item>
 
@@ -58,7 +71,6 @@
 <script>
 import theme from 'muse-ui/lib/theme';
 import settings from '../../settings.js';
-// import FileSelect from '../../components/FileSelect.vue';
 import ImgSelect from '../../components/ImgSelect.vue';
 
 export default {
@@ -87,6 +99,10 @@ export default {
       }else{
         this.settings.background = `url(${file})`
       }
+    },
+    reset(){
+      localStorage.removeItem("settings");
+      this.settings = settings;
     }
   },
   watch:{

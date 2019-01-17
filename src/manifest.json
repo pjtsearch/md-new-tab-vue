@@ -1,6 +1,6 @@
 {
-  "name": "md-new-tab-vue-2",
-  "description": "A Vue.js web extension",
+  "name": "Material Design New Tab",
+  "description": "A customizable new tab page.",
   "version": null,
   "manifest_version": 2,
   "icons": {
@@ -8,7 +8,7 @@
     "128": "icons/icon_128.png"
   },
   "browser_action": {
-    "default_title": "md-new-tab-vue-2",
+    "default_title": "Material Design New Tab",
     "default_popup": "popup/popup.html"
   },
   "background": {
@@ -25,6 +25,7 @@
     "newtab": "new-tab/new-tab.html"
   },
   "permissions": [
-    "http://suggestqueries.google.com/*"
+    "http://suggestqueries.google.com/*",
+    "management"
   ]
 }
